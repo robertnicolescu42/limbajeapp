@@ -101,9 +101,9 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(13, 187);
+            this.button3.Location = new System.Drawing.Point(110, 411);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(190, 79);
+            this.button3.Size = new System.Drawing.Size(92, 27);
             this.button3.TabIndex = 4;
             this.button3.Text = "close";
             this.button3.UseVisualStyleBackColor = true;
@@ -111,9 +111,9 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 320);
+            this.textBox1.Location = new System.Drawing.Point(16, 320);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(191, 20);
+            this.textBox1.Size = new System.Drawing.Size(187, 20);
             this.textBox1.TabIndex = 5;
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
             // 
@@ -128,9 +128,9 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(78, 405);
+            this.button4.Location = new System.Drawing.Point(12, 187);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(125, 33);
+            this.button4.Size = new System.Drawing.Size(190, 80);
             this.button4.TabIndex = 7;
             this.button4.Text = "load html from textbox";
             this.button4.UseVisualStyleBackColor = true;
@@ -149,7 +149,8 @@
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.button1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.ShowIcon = false;
+            this.Text = "Mail/Phone finder";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.limbajeDataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emailsBindingSource)).EndInit();

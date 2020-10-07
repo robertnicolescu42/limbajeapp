@@ -290,7 +290,8 @@
             this.Controls.Add(this.emailsDataGridView);
             this.Controls.Add(this.emailsBindingNavigator);
             this.Name = "Form2";
-            this.Text = "Form2";
+            this.ShowIcon = false;
+            this.Text = "Database entries";
             this.Load += new System.EventHandler(this.Form2_Load);
             ((System.ComponentModel.ISupportInitialize)(this.limbajeDataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emailsBindingSource)).EndInit();
