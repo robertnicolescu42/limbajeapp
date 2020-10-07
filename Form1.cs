@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Net;
 
 namespace limbajeapp
 {
@@ -25,9 +26,8 @@ namespace limbajeapp
 
         }
 
-        public void getEmails(string filePath, string outputPath)
+        public void getEmails(string data, string outputPath)
         {
-            string data = File.ReadAllText(filePath);
 
             Regex emailRegex = new Regex(@"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*", RegexOptions.IgnoreCase);
             //cuvant de dimensiune > 1 cu simboluri sau numere optionale + @ + cuvant de dimensiune > 1 cu simboluri sau numere optionale + . + cuvant de dimensiune > 1 cu simboluri sau numere optionale
@@ -53,9 +53,9 @@ namespace limbajeapp
             File.WriteAllText(outputPath, sb.ToString());
         }
 
-        public void getPhones(string filePath, string outputPath)
+        public void getPhones(string data, string outputPath)
         {
-            string data = File.ReadAllText(filePath);
+            //string data = File.ReadAllText(filePath);
 
             //Regex emailRegex = new Regex(@"(\+4)?07\d{8}");
             Regex emailRegex = new Regex(@"(\+4)?0 ?(\d{3} ?){2}\d{3}");
@@ -92,8 +92,8 @@ namespace limbajeapp
                 string content = File.ReadAllText(filename);
                 richTextBox1.Text = content;
 
-                getEmails(filename, "C:\\Users\\rober\\Desktop\\outputemails.txt");
-                getPhones(filename, "C:\\Users\\rober\\Desktop\\outputphones.txt");
+                getEmails(richTextBox1.Text, "C:\\Users\\rober\\Desktop\\outputemails.txt");
+                getPhones(richTextBox1.Text, "C:\\Users\\rober\\Desktop\\outputphones.txt");
             }
 
             Form form2 = new Form2();
@@ -125,6 +125,39 @@ namespace limbajeapp
         private void button3_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        string getHTML(string url)
+        {
+            string htmlCode;
+            using (WebClient client = new WebClient())
+            {
+                return htmlCode = client.DownloadString(url);
+            }
+
+        }
+
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                richTextBox1.Text = getHTML(textBox1.Text);
+
+                getEmails(richTextBox1.Text, "C:\\Users\\rober\\Desktop\\outputemails.txt");
+                getPhones(richTextBox1.Text, "C:\\Users\\rober\\Desktop\\outputphones.txt");
+                
+                Form form2 = new Form2();
+                form2.ShowDialog();
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            getEmails(richTextBox1.Text, "C:\\Users\\rober\\Desktop\\outputemails.txt");
+            getPhones(richTextBox1.Text, "C:\\Users\\rober\\Desktop\\outputphones.txt");
+
+            Form form2 = new Form2();
+            form2.ShowDialog();
         }
     }
 }
