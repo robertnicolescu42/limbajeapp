@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Net;
+using System.Security.Policy;
 
 namespace limbajeapp
 {
@@ -23,7 +24,6 @@ namespace limbajeapp
         public Form1()
         {
             InitializeComponent();
-
         }
 
         public void getEmails(string data, string outputPath)
@@ -43,14 +43,15 @@ namespace limbajeapp
                 con.Open();
                 SqlCommand cmd = con.CreateCommand();
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "insert into emails values ('" + currentmail + "')";
+                //cmd.CommandText = "insert into emails values ('" + currentmail + "')";
+                cmd.CommandText = "merge into emails e using (select('" + currentmail + "')" + " as mail ) t on t.mail = e.email when not matched then insert(email) values(t.mail);";
                 cmd.ExecuteNonQuery();
                 con.Close();
 
 
             }
             //store to file
-            File.WriteAllText(outputPath, sb.ToString());
+            //File.WriteAllText(outputPath, sb.ToString());
         }
 
         public void getPhones(string data, string outputPath)
@@ -72,11 +73,12 @@ namespace limbajeapp
                 con.Open();
                 SqlCommand cmd = con.CreateCommand();
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "insert into phones values ('" + currentphone + "')";
+                //cmd.CommandText = "insert into phones values ('" + currentphone + "')";
+                cmd.CommandText = "merge into phones p using ( select ('" + currentphone + "')"+" as phon ) t on t.phon = p.phone when not matched then insert (phone) values (t.phon);";
                 cmd.ExecuteNonQuery();
                 con.Close();
             }
-            File.WriteAllText(outputPath, sb.ToString());
+            //File.WriteAllText(outputPath, sb.ToString());
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -92,8 +94,8 @@ namespace limbajeapp
                 string content = File.ReadAllText(filename);
                 richTextBox1.Text = content;
 
-                getEmails(richTextBox1.Text, "C:\\Users\\rober\\Desktop\\outputemails.txt");
-                getPhones(richTextBox1.Text, "C:\\Users\\rober\\Desktop\\outputphones.txt");
+                getEmails(richTextBox1.Text, "");
+                getPhones(richTextBox1.Text, "");
             }
 
             Form form2 = new Form2();
@@ -132,7 +134,7 @@ namespace limbajeapp
             string htmlCode;
             using (WebClient client = new WebClient())
             {
-                return htmlCode = client.DownloadString(url);
+                    return htmlCode = client.DownloadString(url);
             }
 
         }
@@ -141,20 +143,28 @@ namespace limbajeapp
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
-                richTextBox1.Text = getHTML(textBox1.Text);
+                try
+                {
+                    richTextBox1.Text = getHTML(textBox1.Text);
 
-                getEmails(richTextBox1.Text, "C:\\Users\\rober\\Desktop\\outputemails.txt");
-                getPhones(richTextBox1.Text, "C:\\Users\\rober\\Desktop\\outputphones.txt");
-                
-                Form form2 = new Form2();
-                form2.ShowDialog();
+                    //the 2nd parameter was used to store the phones/emails in a text file before i made the db
+                    getEmails(richTextBox1.Text, "");
+                    getPhones(richTextBox1.Text, "");
+
+                    Form form2 = new Form2();
+                    form2.ShowDialog();
+                }
+                catch
+                {
+                    MessageBox.Show("The link is invalid, please enter a valid link!", "Wrong link");
+                }
             }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            getEmails(richTextBox1.Text, "C:\\Users\\rober\\Desktop\\outputemails.txt");
-            getPhones(richTextBox1.Text, "C:\\Users\\rober\\Desktop\\outputphones.txt");
+            getEmails(richTextBox1.Text, "");
+            getPhones(richTextBox1.Text, "");
 
             Form form2 = new Form2();
             form2.ShowDialog();
